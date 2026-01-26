@@ -11,9 +11,16 @@ class ImagesListViewController: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
     
+    func configCell(for cell: ImagesListCell) {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        tableView.register(
+            ImagesListCell.self,
+            forCellReuseIdentifier: ImagesListCell.reuseIdentifier
+        )
     }
 
 
@@ -25,10 +32,15 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
+        
+        guard let imageListCell = cell as? ImagesListCell else {
+            return UITableViewCell()
+        }
+        
+        configCell(for: imageListCell)
+        return imageListCell
     }
-    
-    
 }
 
 extension ImagesListViewController: UITableViewDelegate {
