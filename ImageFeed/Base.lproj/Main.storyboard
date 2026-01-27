@@ -27,7 +27,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="402" height="227"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Uf6-P7-Wxs" userLabel="0">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Uf6-P7-Wxs" userLabel="Cell Image">
                                                     <rect key="frame" x="16" y="4" width="370" height="219"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -66,6 +66,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="cellImage" destination="Uf6-P7-Wxs" id="OyT-WO-niD"/>
+                                            <outlet property="dateLabel" destination="jWm-aY-eyI" id="HQo-D9-sLr"/>
+                                            <outlet property="likeButton" destination="Zjk-gA-jdd" id="8jp-xb-QTx"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
