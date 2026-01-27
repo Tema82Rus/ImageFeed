@@ -8,6 +8,7 @@
 import UIKit
 
 final class ImagesListCell: UITableViewCell {
+    // MARK: - Property
     static let reuseIdentifier = "ImagesListCell"
     
 }

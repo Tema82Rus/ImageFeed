@@ -8,19 +8,20 @@
 import UIKit
 
 class ImagesListViewController: UIViewController {
-
+    // MARK: - Property
     @IBOutlet private var tableView: UITableView!
-    
+    // MARK: - Function
     func configCell(for cell: ImagesListCell) {
         
     }
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 200
     }
 }
 
+    // MARK: - Extension
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
