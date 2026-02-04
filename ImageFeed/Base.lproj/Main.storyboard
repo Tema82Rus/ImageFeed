@@ -72,6 +72,7 @@
                                             <outlet property="cellImage" destination="Uf6-P7-Wxs" id="OyT-WO-niD"/>
                                             <outlet property="dateLabel" destination="jWm-aY-eyI" id="HQo-D9-sLr"/>
                                             <outlet property="likeButton" destination="Zjk-gA-jdd" id="8jp-xb-QTx"/>
+                                            <segue destination="r68-Ea-dmI" kind="show" id="QvV-Zq-Ulv"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -98,6 +99,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="243.28358208955223" y="-539.58810068649882"/>
+        </scene>
+        <!--SingleImage-->
+        <scene sceneID="d25-4j-T4D">
+            <objects>
+                <viewController title="SingleImage" id="r68-Ea-dmI" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2Ns-8T-Xmd">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="5fP-fH-dAY" userLabel="Single Image">
+                                <rect key="frame" x="-8" y="-8" width="418" height="890"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vAX-bp-06R"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="5fP-fH-dAY" firstAttribute="topMargin" secondItem="vAX-bp-06R" secondAttribute="top" id="KxZ-Jv-Tor"/>
+                            <constraint firstItem="vAX-bp-06R" firstAttribute="bottom" secondItem="5fP-fH-dAY" secondAttribute="bottomMargin" id="RGY-IO-lmY"/>
+                            <constraint firstItem="5fP-fH-dAY" firstAttribute="leadingMargin" secondItem="vAX-bp-06R" secondAttribute="leading" id="bak-Br-Iy4"/>
+                            <constraint firstItem="vAX-bp-06R" firstAttribute="trailing" secondItem="5fP-fH-dAY" secondAttribute="trailingMargin" id="jRK-py-sJ4"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="cwJ-vX-lds"/>
+                    <connections>
+                        <outlet property="imageView" destination="5fP-fH-dAY" id="yS5-pE-eLx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yAU-GC-gF8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1115" y="-540"/>
         </scene>
         <!--Profile-->
         <scene sceneID="JeW-wR-t0Z">
@@ -225,6 +256,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="0" width="1600" height="1059"/>
         <image name="0.jpg" width="1600" height="1059"/>
         <image name="Avatar" width="70" height="70"/>
         <image name="Exit" width="44" height="44"/>
