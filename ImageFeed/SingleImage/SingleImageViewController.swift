@@ -16,6 +16,10 @@ final class SingleImageViewController: UIViewController {
         }
     }
     @IBOutlet private var imageView: UIImageView!
+    // MARK: - Action
+    @IBAction private func didTapBackButton() {
+        dismiss(animated: true, completion: nil)
+    }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
