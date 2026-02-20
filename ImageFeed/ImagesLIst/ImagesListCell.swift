@@ -8,10 +8,10 @@
 import UIKit
 
 final class ImagesListCell: UITableViewCell {
-    // MARK: - Property
-    static let reuseIdentifier = "ImagesListCell"
-    
+    // MARK: - IB Outlets
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
+    // MARK: - Private Properties
+    static let reuseIdentifier = "ImagesListCell"
 }
