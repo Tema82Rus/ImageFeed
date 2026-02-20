@@ -8,24 +8,15 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    // MARK: - Property
+    // MARK: - IB Outlets
     @IBOutlet private var avatarImageView: UIImageView!
+    
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var loginNameLabel: UILabel!
     @IBOutlet private var descriptionLabel: UILabel!
+    
     @IBOutlet private var logoutButton: UIButton!
-    
-    // MARK: - Action
-    @IBAction private func didTapLogoutButton() {
-        avatarImageView.image = UIImage(systemName: "person.crop.circle.fill")
-        avatarImageView.tintColor = .gray
-        nameLabel.removeFromSuperview()
-        loginNameLabel.removeFromSuperview()
-        descriptionLabel.removeFromSuperview()
-        
-    }
-    
-    // MARK: - Lifecycle
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let view else { return }
@@ -81,5 +72,13 @@ final class ProfileViewController: UIViewController {
         logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor).isActive = true
         logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         logoutButton.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
+    }
+    // MARK: - IB Actions
+    @IBAction private func didTapLogoutButton() {
+        avatarImageView.image = UIImage(systemName: "person.crop.circle.fill")
+        avatarImageView.tintColor = .gray
+        nameLabel.removeFromSuperview()
+        loginNameLabel.removeFromSuperview()
+        descriptionLabel.removeFromSuperview()
     }
 }
