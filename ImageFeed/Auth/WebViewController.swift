@@ -20,6 +20,7 @@ protocol WebViewViewControllerDelegate: AnyObject {
 final class WebViewViewController: UIViewController {
     // MARK: - IB Outlets
     @IBOutlet private var webView: WKWebView!
+    @IBOutlet private var progressView: UIProgressView!
     // MARK: - Private Properties
     weak var delegate: WebViewViewControllerDelegate?
     // MARK: - View Life Cycles
