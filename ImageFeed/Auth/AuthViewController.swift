@@ -7,9 +7,16 @@
 
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func didAuthenticate(_ vc: AuthViewController)
+}
+
 final class AuthViewController: UIViewController {
+    // MARK: - Public Properties
+    weak var delegate: AuthViewControllerDelegate?
     // MARK: - Private Properties
     private let showWebViewSegueIdentifier = "ShowWebView"
+    private let oauth2Service = OAuth2Service.shared
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +45,42 @@ final class AuthViewController: UIViewController {
     }
 }
 
+//MARK: - WebViewViewControllerDelegate
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        //TODO: - Process code
+        oauth2Service.fetchOAuthToken(code) { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success:
+                vc.dismiss(animated: true)
+                self.delegate?.didAuthenticate(self)
+                
+            case .failure(let error):
+                self.showAuthError(error)
+            }
+        }
     }
-
+    
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
+    }
+    
+    private func showAuthError(_ error: Error) {
+        let alert = UIAlertController(
+            title: "Ошибка входа",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "ОК", style: .default))
+        present(alert, animated: true)
+    }
+}
+
+extension AuthViewController {
+    private func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        oauth2Service.fetchOAuthToken(code) { result in
+            completion(result)
+        }
     }
 }
