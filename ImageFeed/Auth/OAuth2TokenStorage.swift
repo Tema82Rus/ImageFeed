@@ -27,6 +27,4 @@ final class OAuth2TokenStorage {
     private let tokenKey = "OAuth2BearerToken"
     // MARK: - Initializers
     private init() {}
-    
-
 }

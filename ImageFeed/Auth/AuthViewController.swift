@@ -44,18 +44,17 @@ final class AuthViewController: UIViewController {
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
 }
-
-//MARK: - WebViewViewControllerDelegate
+    //MARK: - WebViewViewControllerDelegate
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        oauth2Service.fetchOAuthToken(code) { [weak self] result in
+        vc.dismiss(animated: true)
+        
+        fetchOAuthToken(code) { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success:
-                vc.dismiss(animated: true)
                 self.delegate?.didAuthenticate(self)
-                
             case .failure(let error):
                 self.showAuthError(error)
             }
@@ -68,7 +67,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     private func showAuthError(_ error: Error) {
         let alert = UIAlertController(
-            title: "Ошибка входа",
+            title: "Ошибка входа, токен не сохранён",
             message: error.localizedDescription,
             preferredStyle: .alert
         )
@@ -76,7 +75,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         present(alert, animated: true)
     }
 }
-
+    //MARK: - AuthViewController
 extension AuthViewController {
     private func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         oauth2Service.fetchOAuthToken(code) { result in
