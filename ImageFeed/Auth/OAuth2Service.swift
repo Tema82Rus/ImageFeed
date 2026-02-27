@@ -96,6 +96,8 @@ final class OAuth2Service {
             print("[OAuth2Service] Общая ошибка: \(error.localizedDescription)")
         }
         
+        print("Полная информация об ошибке: \(error)")
+        
         completion(.failure(error))
     }
 }

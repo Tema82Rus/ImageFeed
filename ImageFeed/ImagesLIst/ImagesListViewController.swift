@@ -59,7 +59,7 @@ extension ImagesListViewController: UITableViewDataSource {
         return imageListCell
     }
 }
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
@@ -79,7 +79,7 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
-    //MARK: - ImageListViewController
+//MARK: - ImageListViewController
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {

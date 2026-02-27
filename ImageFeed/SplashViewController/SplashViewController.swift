@@ -8,13 +8,14 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
+    // MARK: - Private Properties
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
 
     private let storage = OAuth2TokenStorage.shared
-
+    // MARK: - View Life Cycles
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         if storage.token != nil {
             switchToTabBarController()
         } else {
@@ -30,7 +31,7 @@ final class SplashViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-
+    // MARK: - Private Methods
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("Invalid window configuration")
@@ -42,7 +43,7 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
 }
-
+// MARK: - SplashViewController
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showAuthenticationScreenSegueIdentifier {
@@ -59,7 +60,7 @@ extension SplashViewController {
         }
     }
 }
-
+// MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
