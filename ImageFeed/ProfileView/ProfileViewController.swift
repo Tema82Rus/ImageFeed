@@ -81,7 +81,7 @@ final class ProfileViewController: UIViewController {
         loginNameLabel.removeFromSuperview()
         descriptionLabel.removeFromSuperview()
     }
-    // MARK: Private Methods
+    // MARK: - Private Methods
     private func setupViews() {
         avatarImageView.image = profileImage
         view.addSubview(avatarImageView)
