@@ -30,6 +30,7 @@ struct Profile {
 
 final class ProfileService {
     static let shared = ProfileService()
+    private init() {}
     
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
@@ -37,6 +38,7 @@ final class ProfileService {
     private(set) var profile: Profile?
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+        assert(Thread.isMainThread)
         task?.cancel()
         
         guard let request = makeProfileRequest(token: token) else {

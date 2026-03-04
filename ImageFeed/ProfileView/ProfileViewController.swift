@@ -53,9 +53,16 @@ final class ProfileViewController: UIViewController {
     private let profileImage = UIImage(resource: .avatar)
     private let profileLogoutImage = UIImage(systemName: "person.crop.circle.fill")
     
-    private let profileService = ProfileService()
+    private let profileService = ProfileService.shared
     
+    private var profileImageServiceObserver: NSObjectProtocol?
     
+    // MARK: - deinit
+    deinit {
+        if let observer = profileImageServiceObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +74,16 @@ final class ProfileViewController: UIViewController {
         if let profile = ProfileService.shared.profile {
             updateProfileDetails(with: profile)
         }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.didChangeNotification,
+                         object: nil,
+                         queue: .main,
+                         ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        self.updateAvatar()
     }
     // MARK: - IB Actions
     @IBAction private func didTapLogoutButton() {
@@ -126,5 +143,13 @@ final class ProfileViewController: UIViewController {
         nameLabel.text = profile.name.isEmpty ? "Имя не указано" : profile.name
         loginNameLabel.text = profile.loginName.isEmpty ? "Логин не указан" : profile.loginName
         descriptionLabel.text = (profile.bio?.isEmpty ?? true) ? "Профиль не заполнен" : profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO
     }
 }
