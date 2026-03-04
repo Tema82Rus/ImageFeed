@@ -53,18 +53,9 @@ final class ProfileViewController: UIViewController {
     private let profileImage = UIImage(resource: .avatar)
     private let profileLogoutImage = UIImage(systemName: "person.crop.circle.fill")
     
-    private enum Constants {
-        static let profileImageSize: CGFloat = 70
-        static let logoutImageSize: CGFloat = 44
-        
-        static let textMinSize: CGFloat = 13
-        static let textMiddleSize: CGFloat = 17
-        static let textMaxSize: CGFloat = 23
-        
-        static let headerHorizontalInset: CGFloat = 16
-        static let headerTopInset: CGFloat = 32
-        static let lineSpacing: CGFloat = 8
-    }
+    private let profileService = ProfileService()
+    
+    
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +63,10 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .ypBlack
         setupViews()
         setupConstraints()
+        
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(with: profile)
+        }
     }
     // MARK: - IB Actions
     @IBAction private func didTapLogoutButton() {
@@ -125,5 +120,11 @@ final class ProfileViewController: UIViewController {
     }
     private func makeFullName() -> String {
         profileName + " " + profileSurname
+    }
+    
+    private func updateProfileDetails(with profile: Profile) {
+        nameLabel.text = profile.name.isEmpty ? "Имя не указано" : profile.name
+        loginNameLabel.text = profile.loginName.isEmpty ? "Логин не указан" : profile.loginName
+        descriptionLabel.text = (profile.bio?.isEmpty ?? true) ? "Профиль не заполнен" : profile.bio
     }
 }
