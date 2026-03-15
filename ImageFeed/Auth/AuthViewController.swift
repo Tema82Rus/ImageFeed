@@ -71,8 +71,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     private func showAuthError(_ error: Error) {
         let alert = UIAlertController(
-            title: "Ошибка входа, токен не сохранён",
-            message: error.localizedDescription,
+            title: "Что-то пошло не так",
+            message: "Не удалось войти в систему",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "ОК", style: .default))
@@ -85,17 +85,5 @@ extension AuthViewController {
         oauth2Service.fetchOAuthToken(code) { result in
             completion(result)
         }
-    }
-    
-    func showAuthErrorAlert() {
-        let alert = UIAlertController(
-            title: "Что-то пошло не так",
-            message: "Не удалось войти в систему",
-            preferredStyle: .alert
-        )
-        
-        let action = UIAlertAction(title: "Ок", style: .default)
-        alert.addAction(action)
-        present(alert, animated: true)
     }
 }
