@@ -14,15 +14,25 @@ final class SplashViewController: UIViewController {
     private let storage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     
+    private var imageView: UIImageView!
+    
     // MARK: - View Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .ypBlack
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        setupImage()
         
         if storage.token != nil {
             guard let token = storage.token else { return }
             fetchProfile(token: token)
         } else {
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            setupAuthViewController()
         }
     }
     
@@ -64,22 +74,25 @@ final class SplashViewController: UIViewController {
             }
         }
     }
-}
-// MARK: - SplashViewController
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else {
-                assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
-                return
-            }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    
+    func setupImage() {
+        let imageSplashLogo = UIImage(resource: .vector)
+        
+        imageView = UIImageView(image: imageSplashLogo)
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+    
+    func setupAuthViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else { return }
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .fullScreen
+        present(authViewController, animated: true, completion: nil)
     }
 }
 // MARK: - AuthViewControllerDelegate
