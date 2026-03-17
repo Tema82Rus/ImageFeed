@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
@@ -53,17 +54,15 @@ final class ProfileViewController: UIViewController {
     private let profileImage = UIImage(resource: .avatar)
     private let profileLogoutImage = UIImage(systemName: "person.crop.circle.fill")
     
-    private enum Constants {
-        static let profileImageSize: CGFloat = 70
-        static let logoutImageSize: CGFloat = 44
-        
-        static let textMinSize: CGFloat = 13
-        static let textMiddleSize: CGFloat = 17
-        static let textMaxSize: CGFloat = 23
-        
-        static let headerHorizontalInset: CGFloat = 16
-        static let headerTopInset: CGFloat = 32
-        static let lineSpacing: CGFloat = 8
+    private let profileService = ProfileService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    // MARK: - deinit
+    deinit {
+        if let observer = profileImageServiceObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -72,6 +71,21 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .ypBlack
         setupViews()
         setupConstraints()
+        
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(with: profile)
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main,
+        ) { [weak self] _ in
+            guard let self else { return }
+            self.updateAvatar()
+        }
+        self.updateAvatar()
     }
     // MARK: - IB Actions
     @IBAction private func didTapLogoutButton() {
@@ -125,5 +139,38 @@ final class ProfileViewController: UIViewController {
     }
     private func makeFullName() -> String {
         profileName + " " + profileSurname
+    }
+    
+    private func updateProfileDetails(with profile: Profile) {
+        nameLabel.text = profile.name.isEmpty ? "Имя не указано" : profile.name
+        loginNameLabel.text = profile.loginName.isEmpty ? "Логин не указан" : profile.loginName
+        descriptionLabel.text = (profile.bio?.isEmpty ?? true) ? "Профиль не заполнен" : profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        let placeholderImage = UIImage(systemName: "person.circle.fill")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal).withConfiguration(UIImage.SymbolConfiguration(pointSize: 70, weight: .regular, scale: .large))
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: url,
+        placeholder: placeholderImage,
+                                    options: [.processor(processor),
+                                              .scaleFactor(UIScreen.main.scale),
+                                              .cacheOriginalImage,
+                                              .forceRefresh
+                                    ]) { result in
+            switch result {
+            case .success(let value):
+                print(value.image)
+                print(value.cacheType)
+                print(value.source)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

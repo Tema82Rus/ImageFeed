@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 protocol AuthViewControllerDelegate: AnyObject {
     func didAuthenticate(_ vc: AuthViewController)
@@ -48,7 +49,11 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         
+        UIBlockingProgressHUD.show()
+        
         fetchOAuthToken(code) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
             guard let self else { return }
             
             switch result {
@@ -66,8 +71,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     private func showAuthError(_ error: Error) {
         let alert = UIAlertController(
-            title: "Ошибка входа, токен не сохранён",
-            message: error.localizedDescription,
+            title: "Что-то пошло не так",
+            message: "Не удалось войти в систему",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "ОК", style: .default))

@@ -10,34 +10,55 @@ import Foundation
 final class OAuth2Service {
     // MARK: - Static Properties
     static let shared = OAuth2Service()
+    // MARK: - Privates Properties
+    
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
     // MARK: - Initializers
     private init() {}
     // MARK: - Public Methods
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
+        guard lastCode != code else {
+            completion(.failure(NetworkError.invalidRequest))
+            return
+        }
+        if task != nil {
+            task?.cancel()
+        }
+        
+        lastCode = code
+        
         guard let request = makeOAuthTokenRequest(code: code) else {
             DispatchQueue.main.async {
                 completion(.failure(NetworkError.invalidRequest))
-                print("Network error, invalid request")
             }
             return
         }
         
-        let task = URLSession.shared.data(for: request) { [weak self] result in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self else { return }
+            self.task = nil
             
             switch result {
-            case .success(let data):
-                self.handleSuccessResponse(data: data, completion: completion)
+            case .success(let responseBody):
+                let bearerToken = responseBody.accessToken
+                OAuth2TokenStorage.shared.token = bearerToken
+                completion(.success(responseBody.accessToken))
             case .failure(let error):
-                self.handleFailureResponse(error: error, completion: completion)
+                handleFailureResponse(error: error, completion: completion)
             }
         }
         
+        self.task = task
         task.resume()
     }
     // MARK: - Private Methods
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token") else {
+            assertionFailure("Failed to create URL")
             return nil
         }
         
@@ -55,24 +76,8 @@ final class OAuth2Service {
         }
         
         var request = URLRequest(url: authTokenUrl)
-        request.httpMethod = "POST"
+        request.httpMethod = HTTPMethod.post.rawValue
         return request
-    }
-    
-    private func handleSuccessResponse(
-        data: Data,
-        completion: @escaping (Result<String, Error>) -> Void
-    ) {
-        do {
-            let tokenResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-            
-            let bearerToken = tokenResponse.accessToken
-            OAuth2TokenStorage.shared.token = bearerToken
-            completion(.success(bearerToken))
-            
-        } catch let decodingError {
-            completion(.failure(NetworkError.decodingError(decodingError)))
-        }
     }
     
     private func handleFailureResponse(
@@ -101,3 +106,4 @@ final class OAuth2Service {
         completion(.failure(error))
     }
 }
+
