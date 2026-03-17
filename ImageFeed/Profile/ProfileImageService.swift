@@ -27,7 +27,7 @@ struct ProfileImage: Codable {
 }
 
 final class ProfileImageService {
-    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let didChangeNotification = Notification.Name("ProfileImageProviderDidChange")
     
     static let shared = ProfileImageService()
     private init() {}
@@ -78,7 +78,7 @@ final class ProfileImageService {
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethod.get.rawValue
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

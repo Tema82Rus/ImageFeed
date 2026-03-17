@@ -49,15 +49,15 @@ final class ProfileService {
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             switch result {
             case .success(let result):
-                    let profile = Profile(
-                        username: result.username,
-                        name: "\(result.firstName) \(result.lastName)",
-                        loginName: "@\(result.username)",
-                        bio: result.bio
-                    )
+                let profile = Profile(
+                    username: result.username,
+                    name: "\(result.firstName) \(result.lastName)",
+                    loginName: "@\(result.username)",
+                    bio: result.bio
+                )
                 
-                    self?.profile = profile
-                    completion(.success(profile))
+                self?.profile = profile
+                completion(.success(profile))
             case .failure(let error):
                 print("[fetchProfile]: Ошибка запроса: \(error.localizedDescription)")
                 completion(.failure(error))
@@ -75,7 +75,7 @@ final class ProfileService {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethod.get.rawValue
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

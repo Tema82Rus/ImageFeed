@@ -25,3 +25,10 @@ enum Constants {
     static let headerTopInset: CGFloat = 32
     static let lineSpacing: CGFloat = 8
 }
+
+enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case delete = "DELETE"
+}
