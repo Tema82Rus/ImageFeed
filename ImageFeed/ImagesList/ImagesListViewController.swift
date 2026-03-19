@@ -19,7 +19,7 @@ final class ImagesListViewController: UIViewController {
         return formatter
     }()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private let imageListService = ImageListService.shared
+    private let imageListService = ImagesListService.shared
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()

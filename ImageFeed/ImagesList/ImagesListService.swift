@@ -48,9 +48,9 @@ struct UrlsResult: Decodable {
 }
 
 
-final class ImageListService {
+final class ImagesListService {
     static let didChangeNotification = Notification.Name("ImageListServiceDidChange")
-    static let shared = ImageListService()
+    static let shared = ImagesListService()
     
     private(set) var photos: [Photo] = []
     
@@ -83,7 +83,7 @@ final class ImageListService {
         request.httpMethod = HTTPMethod.get.rawValue
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        task = urlSession.dataTask(with: request) { [weak self] data, response, error in
+        task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             
             guard let self else { return }
             defer { self.task = nil }
@@ -107,10 +107,10 @@ final class ImageListService {
                     self.photos.append(contentsOf: newPhotos)
                     self.lastLoadedPage = nextPage
                     
-                    NotificationCenter.default.post(name: ImageListService.didChangeNotification, object: nil)
+                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
                 }
             } catch {
-                print("[ImagesListService.fetchPhotosNextPage]: Decoding error \(error) for data: \(String(data: data, encoding: .utf8) ?? "nil")")
+                print("Ошибка декодирования JSON: \(error)")
             }
         }
         task?.resume()
