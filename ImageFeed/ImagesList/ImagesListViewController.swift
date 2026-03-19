@@ -19,6 +19,7 @@ final class ImagesListViewController: UIViewController {
         return formatter
     }()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    private let imageListService = ImageListService.shared
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +58,12 @@ extension ImagesListViewController: UITableViewDataSource {
         
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == imageListService.photos.count {
+            imageListService.fetchPhotosNextPage()
+        }
     }
 }
 // MARK: - UITableViewDelegate
