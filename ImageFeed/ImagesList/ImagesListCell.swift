@@ -6,6 +6,11 @@
 //
 
 import UIKit
+import Kingfisher
+
+protocol ImagesListCellDelegate: AnyObject {
+    func imagesListCellDidTapLike(_ cell: ImagesListCell)
+}
 
 final class ImagesListCell: UITableViewCell {
     // MARK: - IB Outlets
@@ -14,4 +19,29 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var dateLabel: UILabel!
     // MARK: - Private Properties
     static let reuseIdentifier = "ImagesListCell"
+    
+    weak var delegate: ImagesListCellDelegate?
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let padding = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+        contentView.frame = contentView.frame.inset(by: padding)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+        likeButton.isHidden = true
+        dateLabel.isHidden = true
+        
+    }
+    //MARK: - Methods
+    func likeButtonTapped(_ isLiked: Bool) {
+        let image = isLiked
+        ? UIImage(resource: .favoritesActive)
+        : UIImage(resource: .favoritesNoActive)
+        
+        likeButton.setImage(image, for: .normal)
+    }
 }

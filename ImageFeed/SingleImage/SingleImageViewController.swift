@@ -21,6 +21,7 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    var fullImageURl: URL?
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
