@@ -119,7 +119,7 @@ extension ImagesListViewController: UITableViewDataSource {
                     imageListCell.likeButton.isHidden = false
                     imageListCell.dateLabel.isHidden = false
                     
-                    imageListCell.likeButtonTapped(photo.isLiked)
+                    imageListCell.setIsLiked(photo.isLiked)
                     
                     if let date = photo.createdAt {
                         imageListCell.dateLabel.text = self.dateFormatter.string(from: date)
@@ -170,7 +170,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             switch result {
             case .success:
                 self.photos = self.imagesListService.photos
-                cell.likeButtonTapped(self.photos[indexPath.row].isLiked)
+                cell.setIsLiked(self.photos[indexPath.row].isLiked)
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()

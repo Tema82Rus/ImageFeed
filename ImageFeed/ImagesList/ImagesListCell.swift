@@ -18,10 +18,9 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
     // MARK: - IB Actions
-    @IBAction func likeButtonDidTap(_ sender: UIButton) {
+    @IBAction private func likeButtonDidTap(_ sender: UIButton) {
         delegate?.imagesListCellDidTapLike(self)
     }
-    
     // MARK: - Private Properties
     static let reuseIdentifier = "ImagesListCell"
     
@@ -42,7 +41,7 @@ final class ImagesListCell: UITableViewCell {
         
     }
     //MARK: - Methods
-    func likeButtonTapped(_ isLiked: Bool) {
+    func setIsLiked(_ isLiked: Bool) {
         let image = isLiked
         ? UIImage(resource: .favoritesActive)
         : UIImage(resource: .favoritesNoActive)
