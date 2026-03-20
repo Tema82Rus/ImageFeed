@@ -17,6 +17,11 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
+    // MARK: - IB Actions
+    @IBAction func likeButtonDidTap(_ sender: UIButton) {
+        delegate?.imagesListCellDidTapLike(self)
+    }
+    
     // MARK: - Private Properties
     static let reuseIdentifier = "ImagesListCell"
     

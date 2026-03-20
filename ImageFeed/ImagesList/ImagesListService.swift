@@ -81,7 +81,6 @@ final class ImagesListService {
             URLQueryItem(name: "per_page", value: "\(perPage)")
         ]
         guard let url = urlComponents.url else { return }
-        //        print(url.absoluteString)
         
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.get.rawValue
@@ -190,7 +189,7 @@ final class ImagesListService {
                               welcomeDescription: photo.welcomeDescription,
                               thumbImageURL: photo.thumbImageURL,
                               largeImageURL: photo.largeImageURL,
-                              isLiked: photo.isLiked
+                              isLiked: isLiked
         )
         
         NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)

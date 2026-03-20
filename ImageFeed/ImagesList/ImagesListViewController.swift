@@ -154,29 +154,8 @@ extension ImagesListViewController: UITableViewDelegate {
         let screenWidth = tableView.bounds.width
         let size = photo.size.width / screenWidth
         return photo.size.height / size
-        
-//        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-//        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-//        let imageWidth = photo.size.width
-//        let scale = imageViewWidth / imageWidth
-//        let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
-//        return cellHeight
     }
 }
-
-////MARK: - ImageListViewController
-//extension ImagesListViewController {
-//    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-//        let photo = photos[indexPath.row]
-//        
-//        cell.cellImage.image = image
-//        cell.dateLabel.text = dateFormatter.string(from: Date())
-//        
-//        let isLiked = indexPath.row % 2 == 0
-//        let likeImage = isLiked ? UIImage(resource: .favoritesActive) : UIImage(resource: .favoritesNoActive)
-//        cell.likeButton.setImage(likeImage, for: .normal)
-//    }
-//}
 
 extension ImagesListViewController: ImagesListCellDelegate {
     func imagesListCellDidTapLike(_ cell: ImagesListCell) {
