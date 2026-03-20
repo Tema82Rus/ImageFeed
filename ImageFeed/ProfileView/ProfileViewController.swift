@@ -89,11 +89,6 @@ final class ProfileViewController: UIViewController {
     }
     // MARK: - IB Actions
     @IBAction private func didTapLogoutButton() {
-//        avatarImageView.image = profileLogoutImage
-//        avatarImageView.tintColor = .gray
-//        nameLabel.removeFromSuperview()
-//        loginNameLabel.removeFromSuperview()
-//        descriptionLabel.removeFromSuperview()
         logoutButtonDidTap()
     }
     // MARK: - Private Methods
@@ -177,7 +172,7 @@ final class ProfileViewController: UIViewController {
     
     private func logoutButtonDidTap() {
         let alert = UIAlertController(title: "Выход из аккаунта",
-                                      message: "Вы точно уверены, что хотите выйти?",
+                                      message: "Вы уверены, что хотите выйти?",
                                       preferredStyle: .alert
         )
         

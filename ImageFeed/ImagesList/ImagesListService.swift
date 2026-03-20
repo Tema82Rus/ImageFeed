@@ -55,9 +55,11 @@ enum UnsplashError: Error {
 
 
 final class ImagesListService {
+    // MARK: - Static Properties
     static let didChangeNotification = Notification.Name("ImageListServiceDidChange")
     static let shared = ImagesListService()
     
+    // MARK: - Private Properties
     private(set) var photos: [Photo] = []
     
     private var lastLoadedPage: Int?
@@ -67,9 +69,10 @@ final class ImagesListService {
     private let urlSession = URLSession.shared
     private let dateFormatter = ISO8601DateFormatter()
     
-    
+    // MARK: - Private Initializers
     private init() {}
     
+    // MARK: - Open Methods
     func resetPhotos() {
         photos.removeAll()
     }
@@ -95,7 +98,6 @@ final class ImagesListService {
         }
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        //        request.setValue("v1", forHTTPHeaderField: "Accept-Version")
         
         task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             
@@ -103,7 +105,7 @@ final class ImagesListService {
             defer { self.task = nil }
             
             if let error {
-                print("Network error: \(error.localizedDescription)")
+                print("[ImagesListService.fetchPhotosNextPage]: Network error: \(error.localizedDescription)")
             }
             
             
@@ -131,7 +133,7 @@ final class ImagesListService {
                     NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
                 }
             } catch {
-                print("Ошибка декодирования JSON: \(error)")
+                print("[ImagesListService.fetchPhotosNextPage]: Decoding error: \(error) for data: \(String(data: data, encoding: .utf8) ?? "nil")")
             }
         }
         task?.resume()
@@ -182,6 +184,7 @@ final class ImagesListService {
         task.resume()
     }
     
+    // MARK: - Private Methods
     private func updatePhotoLike(photoId: String, isLiked: Bool) {
         guard let index = photos.firstIndex(where: { $0.id == photoId }) else { return }
         
