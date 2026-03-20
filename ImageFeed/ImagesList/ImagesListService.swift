@@ -70,6 +70,10 @@ final class ImagesListService {
     
     private init() {}
     
+    func resetPhotos() {
+        photos.removeAll()
+    }
+    
     func fetchPhotosNextPage() {
         if task != nil { return }
         
