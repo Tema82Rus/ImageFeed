@@ -6,7 +6,7 @@
 //
 
 import Foundation
-internal import CoreGraphics
+import CoreGraphics
 
 struct Photo {
     let id: String
@@ -65,6 +65,7 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     
     private var task: URLSessionTask?
+    private var decoder = JSONDecoder()
     private var perPage = 10
     private let urlSession = URLSession.shared
     private let dateFormatter = ISO8601DateFormatter()
@@ -78,7 +79,7 @@ final class ImagesListService {
     }
     
     func fetchPhotosNextPage() {
-        if task != nil { return }
+        guard task == nil else { return }
         
         let nextPage = (lastLoadedPage ?? 0) + 1
         
@@ -112,7 +113,7 @@ final class ImagesListService {
             guard let data else { return }
             
             do {
-                let photoResults = try JSONDecoder().decode([PhotoResult].self, from: data)
+                let photoResults = try decoder.decode([PhotoResult].self, from: data)
                 print("Success: \(photoResults)")
                 
                 let newPhotos = photoResults.map { result -> Photo in
