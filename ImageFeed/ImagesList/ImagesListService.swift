@@ -73,7 +73,7 @@ final class ImagesListService {
     // MARK: - Private Initializers
     private init() {}
     
-    // MARK: - Open Methods
+    // MARK: - Public Methods
     func resetPhotos() {
         photos.removeAll()
     }

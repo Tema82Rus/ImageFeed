@@ -38,7 +38,7 @@ final class ProfileImageService {
     // MARK: - Private Initializers
     private init() {}
     
-    // MARK: - Open Methods
+    // MARK: - Public Methods
     func resetURL() {
         avatarURL = nil
     }

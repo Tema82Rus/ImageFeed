@@ -41,7 +41,7 @@ final class ProfileService {
     // MARK: - Private Initializers
     private init() {}
     
-    // MARK: - Open Methods
+    // MARK: - Public Methods
     func resetProfile() {
         profile = nil
     }

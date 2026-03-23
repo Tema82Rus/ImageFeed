@@ -15,7 +15,7 @@ final class ProfileLogoutService {
     // MARK: - Private Initializers
     private init() {}
     
-    // MARK: - Open Methods
+    // MARK: - Public Methods
     func logout() {
         OAuth2TokenStorage.shared.removeToken()
         ProfileService.shared.resetProfile()
