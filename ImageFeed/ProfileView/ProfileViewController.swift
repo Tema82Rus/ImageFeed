@@ -50,6 +50,7 @@ final class ProfileViewController: UIViewController {
     private(set) lazy var logoutButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityIdentifier = "logout button"
         return button
     }()
 

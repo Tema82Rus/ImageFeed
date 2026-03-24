@@ -135,7 +135,7 @@ final class ProfileViewControllerTests: XCTestCase {
         
         // Then
         XCTAssertNotNil(actions, "Logout button should have actions")
-        XCTAssertTrue(actions?.contains("didTapLogoutButton") ?? false, "Logout button should have logoutButtonTapped action")
+        XCTAssertTrue(actions?.contains("didTapLogoutButton") ?? false, "Logout button should have didTapLogoutButton action")
     }
     
     func testLogoutButtonTappedCallsPresenter() {
