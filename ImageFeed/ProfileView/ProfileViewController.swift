@@ -8,15 +8,22 @@
 import UIKit
 import Kingfisher
 
+public protocol ProfileViewControllerProtocol: AnyObject {
+    func updateProfileDetails(with profile: Profile)
+    func updateAvatar()
+    func logoutButtonDidTapAlert()
+    func dismissView()
+}
+
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
-    private let avatarImageView: UIImageView = {
+    private(set) lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let nameLabel: UILabel = {
+    private(set) lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypWhiteIOS
         label.font = .systemFont(ofSize: Constants.textMaxSize, weight: .bold)
@@ -24,7 +31,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let loginNameLabel: UILabel = {
+    private(set) lazy var loginNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypGrayIOS
         label.font = .systemFont(ofSize: Constants.textMinSize, weight: .regular)
@@ -32,7 +39,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let descriptionLabel: UILabel = {
+    private(set) lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypWhiteIOS
         label.font = .systemFont(ofSize: Constants.textMinSize, weight: .regular)
@@ -40,7 +47,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let logoutButton: UIButton = {
+    private(set) lazy var logoutButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -55,9 +62,11 @@ final class ProfileViewController: UIViewController {
     private let profileLogoutImage = UIImage(systemName: "person.crop.circle.fill")
     
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
+    private(set) var presenter: ProfileViewPresenterProtocol?
     // MARK: - deinit
     deinit {
         if let observer = profileImageServiceObserver {
@@ -72,24 +81,25 @@ final class ProfileViewController: UIViewController {
         setupViews()
         setupConstraints()
         
-        if let profile = ProfileService.shared.profile {
-            updateProfileDetails(with: profile)
+        if presenter == nil {
+            presenter = ProfileViewPresenter()
+            presenter?.view = self
         }
         
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main,
-        ) { [weak self] _ in
-            guard let self else { return }
-            self.updateAvatar()
-        }
-        self.updateAvatar()
+        presenter?.viewDidLoad()
     }
     // MARK: - IB Actions
     @IBAction private func didTapLogoutButton() {
-        logoutButtonDidTap()
+        logoutButtonDidTapAlert()
+    }
+    // MARK: - Public Methods
+    func dismissView() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func configure(_ presenter: ProfileViewPresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
     }
     // MARK: - Private Methods
     private func setupViews() {
@@ -136,14 +146,16 @@ final class ProfileViewController: UIViewController {
     private func makeFullName() -> String {
         profileName + " " + profileSurname
     }
-    
-    private func updateProfileDetails(with profile: Profile) {
+}
+
+extension ProfileViewController: ProfileViewControllerProtocol {
+    func updateProfileDetails(with profile: Profile) {
         nameLabel.text = profile.name.isEmpty ? "Имя не указано" : profile.name
         loginNameLabel.text = profile.loginName.isEmpty ? "Логин не указан" : profile.loginName
         descriptionLabel.text = (profile.bio?.isEmpty ?? true) ? "Профиль не заполнен" : profile.bio
     }
     
-    private func updateAvatar() {
+    func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
@@ -170,7 +182,7 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    private func logoutButtonDidTap() {
+    func logoutButtonDidTapAlert() {
         let alert = UIAlertController(title: "Выход из аккаунта",
                                       message: "Вы уверены, что хотите выйти?",
                                       preferredStyle: .alert
@@ -178,8 +190,9 @@ final class ProfileViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
         alert.addAction(UIAlertAction(title: "Выйти", style: .destructive, handler: { [weak self] _ in
-            ProfileLogoutService.shared.logout()
-            self?.dismiss(animated: true, completion: nil)
+            self?.presenter?.didTapLogoutButton()
+//            ProfileLogoutService.shared.logout()
+//            self?.dismiss(animated: true, completion: nil)
         }))
         
         present(alert, animated: true)

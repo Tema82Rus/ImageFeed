@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-struct Photo {
+public struct Photo {
     let id: String
     let size: CGSize
     let createdAt: Date?
@@ -53,8 +53,19 @@ enum UnsplashError: Error {
     case invalidResponse
 }
 
+protocol ImagesListServiceProtocol: AnyObject {
+    var photos: [Photo] { get }
+    func fetchPhotosNextPage()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
 
-final class ImagesListService {
+extension ImagesListServiceProtocol {
+    static var didChangeNotification: Notification.Name {
+        Notification.Name("ImagesListServiceDidChange")
+    }
+}
+
+class ImagesListService: ImagesListServiceProtocol {
     // MARK: - Static Properties
     static let didChangeNotification = Notification.Name("ImageListServiceDidChange")
     static let shared = ImagesListService()
