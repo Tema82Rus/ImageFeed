@@ -192,8 +192,6 @@ extension ProfileViewController: ProfileViewControllerProtocol {
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
         alert.addAction(UIAlertAction(title: "Выйти", style: .destructive, handler: { [weak self] _ in
             self?.presenter?.didTapLogoutButton()
-//            ProfileLogoutService.shared.logout()
-//            self?.dismiss(animated: true, completion: nil)
         }))
         
         present(alert, animated: true)
