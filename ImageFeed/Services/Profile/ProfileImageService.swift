@@ -26,7 +26,7 @@ struct ProfileImage: Codable {
     let large: String
 }
 
-final class ProfileImageService {
+class ProfileImageService {
     // MARK: - Static Properties
     static let didChangeNotification = Notification.Name("ProfileImageProviderDidChange")
     static let shared = ProfileImageService()
@@ -38,7 +38,7 @@ final class ProfileImageService {
     // MARK: - Private Initializers
     private init() {}
     
-    // MARK: - Open Methods
+    // MARK: - Public Methods
     func resetURL() {
         avatarURL = nil
     }

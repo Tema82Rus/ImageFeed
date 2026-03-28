@@ -8,11 +8,11 @@
 import UIKit
 import Kingfisher
 
-final class ImagesListViewController: UIViewController {
+class ImagesListViewController: UIViewController {
     // MARK: - IB Outlets
     @IBOutlet private var tableView: UITableView!
     // MARK: - Private Properties
-    private var photos: [Photo] = []
+    var photos: [Photo] = []
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -51,7 +51,7 @@ final class ImagesListViewController: UIViewController {
     }
     
     //MARK: - Privates Methods
-    @objc private func updateTableViewAnimated() {
+    @objc func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = photos.count
         photos = imagesListService.photos

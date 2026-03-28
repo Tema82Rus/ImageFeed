@@ -21,7 +21,7 @@ struct ProfileResult: Codable {
     }
 }
 
-struct Profile {
+public struct Profile {
     let username: String
     let name: String
     let loginName: String
@@ -41,7 +41,7 @@ final class ProfileService {
     // MARK: - Private Initializers
     private init() {}
     
-    // MARK: - Open Methods
+    // MARK: - Public Methods
     func resetProfile() {
         profile = nil
     }
