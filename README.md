@@ -10,7 +10,13 @@ https://github.com/user-attachments/assets/3e846cb1-ba9d-4241-aff4-ab7adc3c9191
 
 ## Скриншоты
 
+| Экран входа | Авторизация через Unsplash | Лента фотографий |
+|:-----------:|:--------------------------:|:----------------:|
+| <img src="ImageFeed/Resources/Screenshots/autorizationScreen.png" width="230"> | <img src="ImageFeed/Resources/Screenshots/loginScreen.png" width="230"> | <img src="ImageFeed/Resources/Screenshots/photosFeedScreen.png" width="230"> |
 
+| Полноэкранный просмотр | Подтверждение выхода из профиля |
+|:----------------------:|:-----------------------------:|
+| <img src="ImageFeed/Resources/Screenshots/fullPhotoScreen.png" width="230"> | <img src="ImageFeed/Resources/Screenshots/logoutScreen.png" width="230"> |
 
 ## Ссылки
 
